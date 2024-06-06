@@ -63,11 +63,6 @@ end
 exports('TriggerAmbulanceCall', TriggerAmbulanceCall)
 
 
--- Export function to trigger the ambulance call from other scripts
-exports('TriggerAmbulanceCall', function()
-    TriggerEvent('vibes-ems:client:helpPlayer')
-end)
-
 function SpawnVehicle(x, y, z)  
 	spam = false
 	local vehhash = GetHashKey("ambulance")                                                     
