@@ -8,29 +8,65 @@ local spam = true
  
 
 
-RegisterCommand("help", function(source, args, raw)
-	if (QBCore.Functions.GetPlayerData().metadata["isdead"]) or (QBCore.Functions.GetPlayerData().metadata["inlaststand"]) and spam then
-		QBCore.Functions.TriggerCallback('hhfw:docOnline', function(EMSOnline, hasEnoughMoney)
-			if EMSOnline <= Config.Doctor and hasEnoughMoney and spam then
-				SpawnVehicle(GetEntityCoords(PlayerPedId()))
-				TriggerServerEvent('hhfw:charge')
-				Notify("Medic is arriving")
-			else
-				if EMSOnline > Config.Doctor then
-					Notify("There is too many medics online", "error")
-				elseif not hasEnoughMoney then
-					Notify("Not Enough Money", "error")
-				else
-					Notify("Wait Paramadic is on its Way", "primary")
-				end	
-			end
-		end)
-	else
-		Notify("This can only be used when dead", "error")
-	end
+if Config.UseHelpCommand then
+    RegisterCommand("help", function(source, args, raw)
+        if (QBCore.Functions.GetPlayerData().metadata["isdead"]) or (QBCore.Functions.GetPlayerData().metadata["inlaststand"]) and spam then
+            QBCore.Functions.TriggerCallback('hhfw:docOnline', function(EMSOnline, hasEnoughMoney)
+                if EMSOnline <= Config.Doctor and hasEnoughMoney and spam then
+                    SpawnVehicle(GetEntityCoords(PlayerPedId()))
+                    TriggerServerEvent('hhfw:charge')
+                    Notify("Medic is arriving")
+                else
+                    if EMSOnline > Config.Doctor then
+                        Notify("There are too many medics online", "error")
+                    elseif not hasEnoughMoney then
+                        Notify("Not Enough Money", "error")
+                    else
+                        Notify("Wait, Paramedic is on the way", "primary")
+                    end    
+                end
+            end)
+        else
+            Notify("This can only be used when dead", "error")
+        end
+    end)
+end
+
+-- Client event to trigger the ambulance call
+RegisterNetEvent('vibes-ems:client:helpPlayer', function()
+    if (QBCore.Functions.GetPlayerData().metadata["isdead"]) or (QBCore.Functions.GetPlayerData().metadata["inlaststand"]) and spam then
+        QBCore.Functions.TriggerCallback('hhfw:docOnline', function(EMSOnline, hasEnoughMoney)
+            if EMSOnline <= Config.Doctor and hasEnoughMoney and spam then
+                SpawnVehicle(GetEntityCoords(PlayerPedId()))
+                TriggerServerEvent('hhfw:charge')
+                Notify("Medic is arriving")
+            else
+                if EMSOnline > Config.Doctor then
+                    Notify("There are too many medics online", "error")
+                elseif not hasEnoughMoney then
+                    Notify("Not Enough Money", "error")
+                else
+                    Notify("Wait, Paramedic is on the way", "primary")
+                end    
+            end
+        end)
+    else
+        Notify("This can only be used when dead", "error")
+    end
 end)
 
+-- Export function to trigger the ambulance call from other scripts
+function TriggerAmbulanceCall()
+    TriggerEvent('vibes-ems:client:helpPlayer')
+end
 
+exports('TriggerAmbulanceCall', TriggerAmbulanceCall)
+
+
+-- Export function to trigger the ambulance call from other scripts
+exports('TriggerAmbulanceCall', function()
+    TriggerEvent('vibes-ems:client:helpPlayer')
+end)
 
 function SpawnVehicle(x, y, z)  
 	spam = false
