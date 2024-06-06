@@ -32,7 +32,7 @@ if Config.UseHelpCommand then
     end)
 end
 
--- Client event to trigger the ambulance call
+-- Client event to trigger the ambulance call from other scripts
 RegisterNetEvent('vibes-ems:client:helpPlayer', function()
     if (QBCore.Functions.GetPlayerData().metadata["isdead"]) or (QBCore.Functions.GetPlayerData().metadata["inlaststand"]) and spam then
         QBCore.Functions.TriggerCallback('hhfw:docOnline', function(EMSOnline, hasEnoughMoney)
