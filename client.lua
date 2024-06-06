@@ -68,13 +68,11 @@ local function getDistanceBetweenCoords(coords1, coords2)
     return math.sqrt(dx * dx + dy * dy + dz * dz)
 end
 
--- Function to parse a string into a table with x, y, z, heading
 local function parseVector4String(vector4String)
     local x, y, z, heading = string.match(vector4String, "([^,]+), ([^,]+), ([^,]+), ([^,]+)")
     return { x = tonumber(x), y = tonumber(y), z = tonumber(z), heading = tonumber(heading) }
 end
 
--- Function to find the closest spawn location
 local function getClosestSpawnLocation(playerCoords, spawnLocations)
     local closestDistance = nil
     local closestLocation = nil
@@ -91,25 +89,21 @@ local function getClosestSpawnLocation(playerCoords, spawnLocations)
     return closestLocation
 end
 
--- Function to spawn the vehicle
 function SpawnVehicle()
     spam = false
     local vehhash = GetHashKey(Config.Vehicle)
     local playerCoords = GetEntityCoords(PlayerPedId())
 
-    -- Request the vehicle model
     RequestModel(vehhash)
     while not HasModelLoaded(vehhash) do
         Wait(1)
     end
 
-    -- Request the doctor ped model
     RequestModel('s_m_m_doctor_01')
     while not HasModelLoaded('s_m_m_doctor_01') do
         Wait(1)
     end
 
-    -- Find the closest spawn location
     local closestSpawn = getClosestSpawnLocation(playerCoords, Config.VehicleSpawns)
 
     if closestSpawn and not DoesEntityExist(vehhash) then
@@ -120,7 +114,6 @@ function SpawnVehicle()
         SetEntityAsMissionEntity(mechVeh, true, true)
         SetVehicleEngineOn(mechVeh, true, true, false)
 
-        -- Enable sirens and lights
         SetVehicleSiren(mechVeh, true)
         SetVehicleHasMutedSirens(mechVeh, Config.MutedSirens)
 
@@ -133,7 +126,7 @@ function SpawnVehicle()
         PlaySoundFrontend(-1, "Text_Arrive_Tone", "Phone_SoundSet_Default", 1)
         Wait(2000)
         TaskVehicleDriveToCoord(mechPed, mechVeh, playerCoords.x, playerCoords.y, playerCoords.z, 20.0, 0, GetEntityModel(mechVeh), 524863, 2.0)
-        originalSpawnLocation = closestSpawn -- Store the original spawn location
+        originalSpawnLocation = closestSpawn 
         test = mechVeh
         test1 = mechPed
         Active = true
@@ -204,21 +197,19 @@ end
 
 function DriveAwayFromPlayer()
     local playerCoords = GetEntityCoords(PlayerPedId())
-    local drivingStyle = 786603 -- Change this value to adjust the driving style
+    local drivingStyle = 786603 
     
-    -- Set the destination to the original spawn location
+    
     TaskVehicleDriveToCoord(mechPed, mechVeh, originalSpawnLocation.x, originalSpawnLocation.y, originalSpawnLocation.z, 20.0, 0, GetEntityModel(mechVeh), drivingStyle, 1.0, true)
     
-    -- Wait until the vehicle reaches the destination or a certain distance from it
     local distance = GetDistanceBetweenCoords(GetEntityCoords(mechVeh), originalSpawnLocation.x, originalSpawnLocation.y, originalSpawnLocation.z, true)
-    local threshold = 5.0 -- Adjust this value to set the distance threshold for reaching the destination
+    local threshold = 5.0 
     
     while distance > threshold do
         Citizen.Wait(1000)
         distance = GetDistanceBetweenCoords(GetEntityCoords(mechVeh), originalSpawnLocation.x, originalSpawnLocation.y, originalSpawnLocation.z, true)
     end
     
-    -- Remove the ped and vehicle once the destination is reached
     RemovePedElegantly(test1)
     DeleteEntity(test)
     Wait(5000)
