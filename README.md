@@ -47,9 +47,9 @@ This script is designed for servers where EMS or doctors are not available. Play
 - Integration with the QBCORE framework
 - GitHub repository for community collaboration and open usage policy
 
-Feel free to customize the changelog format and add more details based on the specific changes you made to the script. The changelog helps users understand the updates and improvements made in each version of your script.
-
 # Install 
+
+- Drop into resource folder 
 
 	exports['vibes-ems']:TriggerAmbulanceCall()
 
