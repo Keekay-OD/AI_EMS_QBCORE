@@ -15,14 +15,14 @@ if Config.UseHelpCommand then
                 if EMSOnline <= Config.Doctor and hasEnoughMoney and spam then
                     SpawnVehicle(GetEntityCoords(PlayerPedId()))
                     TriggerServerEvent('vibes-ems:charge')
-                    Notify("Medic is arriving")
+                    TriggerServerEvent('vibes-ems:notify', "Medic is arriving", "success")
                 else
                     if EMSOnline > Config.Doctor then
-                        Notify("There are too many medics online", "error")
+                        TriggerServerEvent('vibes-ems:notify', "There are too many medics online", "error")
                     elseif not hasEnoughMoney then
-                        Notify("Not Enough Money", "error")
+                        TriggerServerEvent('vibes-ems:notify', "Not Enough Money", "error")
                     else
-                        Notify("Wait, Paramedic is on the way", "primary")
+                        TriggerServerEvent('vibes-ems:notify', "Wait, Paramedic is on the way", "primary")
                     end    
                 end
             end)
@@ -38,19 +38,19 @@ RegisterNetEvent('vibes-ems:client:helpPlayer', function()
             if EMSOnline <= Config.Doctor and hasEnoughMoney and spam then
                 SpawnVehicle(GetEntityCoords(PlayerPedId()))
                 TriggerServerEvent('vibes-ems:charge')
-                Notify("Medic is arriving")
+                TriggerServerEvent('vibes-ems:notify', "Medic is arriving", "success", true)
             else
                 if EMSOnline > Config.Doctor then
-                    Notify("There are too many medics online", "error")
+                    TriggerServerEvent('vibes-ems:notify', "There are too many medics online", "error", true)
                 elseif not hasEnoughMoney then
-                    Notify("Not Enough Money", "error")
+                    TriggerServerEvent('vibes-ems:notify', "Not Enough Money", "error", true)
                 else
-                    Notify("Wait, Paramedic is on the way", "primary")
-                end    
+                    TriggerServerEvent('vibes-ems:notify', "Wait, Paramedic is on the way", "primary", true)
+                end
             end
         end)
     else
-        Notify("This can only be used when dead", "error")
+        TriggerServerEvent('vibes-ems:notify', "This can only be used when dead", "error", true)
     end
 end)
 
@@ -155,7 +155,7 @@ function DoctorNPC()
         TriggerEvent("hospital:client:Revive")
         StopScreenEffect('DeathFailOut')
         
-        TriggerServerEvent('vibes-ems:notify', "Your treatment is done, you were charged: $" .. Config.Price, "success")
+        TriggerServerEvent('vibes-ems:notify', "Your treatment is done, you were charged: $" .. Config.Price, "success", false)
         RemovePedElegantly(test1)
         DeleteEntity(test)
         Wait(5000)

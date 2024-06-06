@@ -17,6 +17,13 @@ Config.CustomNotifyFunction = nil -- Set this to your custom notification functi
 Config.MutedSirens = false -- Set to true if you want to mute the sirens when going to the player
 Config.Vehicle = "ambulance"  -- Default vehicle, Use emergency vehicle or it will cause issues
 
+-- List of possible vehicle spawns- Hospitals parking spots are a good place to spawn vehicles
+Config.VehicleSpawns = {
+    "254.90, -1436.83, 29.14, 43.05",
+    "400.0, 500.0, 30.0, 180.0",
+    "600.0, 700.0, 40.0, 270.0"
+}
+
 
 -- Phone Settings
 Config.UsingPhone = true -- Set to true if using a phone system
