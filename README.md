@@ -1,4 +1,4 @@
-# hh_aidoc
+# VIBES
 AI Doctor
 
 # Description :
