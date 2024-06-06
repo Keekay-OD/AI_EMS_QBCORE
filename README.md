@@ -3,21 +3,51 @@ AI Doctor for QB-CORE
 
 # Description :
 
-This script is basically for to be used in the server when there are no ems /doctors available in the server the players will get an option to pay and get helped/revived on there spot present by a moving ambulance with a doctor!
-
-
+This script is designed for servers where EMS or doctors are not available. Players can pay to receive immediate assistance and be revived on the spot by a doctor arriving in a moving ambulance.
 
 
 # Features:
 
 - **Enhanced Roleplay Experience:** This script is perfect for large servers, offering players more immersive roleplay opportunities by reducing the need for constant respawning or just sitting around.
 - **Responsive EMS Ped:** The EMS ped in the ambulance can respond from any location, ensuring timely and well-coordinated assistance regardless of where you are on the map.
-- **Notifications are Configurable:** Tailor the script notifications to your server's needs. 
-- **Seamless Integration:** Designed to enhance roleplay and minimize respawning, this script is for QBCORE
+- **Configurable Notifications:** Tailor the script notifications to your server's needs. Choose from various notification systems such as QB-Notify, OkokNotify, Mythic Notify, or even provide your own custom notification function.
+- **Phone Integration:** If you're using a phone system like lb-phone, the script can send notifications directly to the player's phone, enhancing the immersive experience.
+- **Obstacle Navigation:** The EMS ped is now smarter and can navigate around obstacles, including vehicles, to reach the player more efficiently.
+- **Seamless Integration:** Designed to enhance roleplay and minimize respawning, this script is compatible with the QBCORE framework.
 - **Community Collaboration:** Hosted on GitHub, this script welcomes pull requests. Feel free to contribute by adding useful changes and improvements.
 - **Open Usage Policy:** Use this script freely to enhance your server, but please don't edit and resell it.
 - **Shoutouts:** Big thanks to @hh_aidoc for the fork. https://github.com/hhfw1/hh_aidoc
----
+
+# Changelog:
+
+## [1.1.0] - 2023-06-06
+
+### Added
+- Configurable notification system support:
+  - QB-Notify
+  - OkokNotify
+  - Mythic Notify
+  - Custom notification function
+- Phone integration for lb-phone, allowing notifications to be sent directly to the player's phone
+- Obstacle navigation for the EMS ped, enabling smarter pathfinding around vehicles and other obstacles
+
+### Changed
+- Refactored the `Notify` function to handle different notification systems based on the configuration
+- Updated the `DoctorNPC` function to retrieve the player's phone number and send notifications accordingly
+
+### Fixed
+- Resolved issues with the EMS ped getting stuck behind obstacles during navigation
+- Fixed incorrect version comparison in the update notification system
+
+## [1.0.0] - 2023-05-28
+
+### Added
+- Initial release of the Vibes EMS script
+- Responsive EMS ped that can respond from any location on the map
+- Integration with the QBCORE framework
+- GitHub repository for community collaboration and open usage policy
+
+Feel free to customize the changelog format and add more details based on the specific changes you made to the script. The changelog helps users understand the updates and improvements made in each version of your script.
 
 # Install 
 
