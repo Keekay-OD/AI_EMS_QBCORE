@@ -27,5 +27,5 @@ Config.VehicleSpawns = {
 -- Phone Settings
 Config.UsingPhone = true -- Set to true if using a phone system
 Config.Phone = "lb-phone" -- Options: "lb-phone", "qb-smartphone", "qs-smartphone"
-Config.SMS = true -- Set to true if using a phone system and want to send SMS when the player is revived
+Config.SMS = true -- Set to true if using a phone system and want to send SMS when the player is revived with the bill amount and details
 Config.SMSSender = "VC Medical"  -- This is where you can change the text message sender name if using the phone. 
