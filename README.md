@@ -20,6 +20,12 @@ This script is designed for servers where EMS or doctors are not available. Play
 
 # Changelog:
 
+## [1.2.0] - 2023-06-06
+
+### Added
+- Vehicle Emergency Lights and Seirens options added to config.  
+
+
 ## [1.1.0] - 2023-06-06
 
 ### Added

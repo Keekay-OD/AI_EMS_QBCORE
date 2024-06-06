@@ -36,16 +36,13 @@ local function GetLatestReleaseVersion()
                 latestVersion = string.sub(latestVersion, 2)
             end
             
-            -- Stop the loading animation
             loadingIndex = 0
             
-            -- Version comparison logic
             if localVersion < latestVersion then
 				Wait(1000)
                 print("^1Your version is out of date!")
                 print("^7You are using version: ^1" .. localVersion)
                 print("^7A new version is available: ^2" .. latestVersion)
-                -- Perform any additional actions you want to take when a new version is available
             elseif localVersion > latestVersion then
 				Wait(1000)
                 print("^9Shoutouts to you for being a part of the Vibes Dev Team.")
@@ -53,14 +50,12 @@ local function GetLatestReleaseVersion()
                 print("^7You are using a newer version: ^9" .. tostring(localVersion))
 				Wait(1000)
                 print("^7The latest public release version is: ^2" .. latestVersion)
-                -- Perform any additional actions for testers using a newer version
             else
 				Wait(1000)
                 print("^7You are using the latest version: ^2" .. localVersion)
             end
 
         else
-            -- Stop the loading animation
             loadingIndex = 0
             
             print("^1Failed to retrieve the latest release information. Status Code: " .. statusCode)
@@ -68,7 +63,6 @@ local function GetLatestReleaseVersion()
     end, "GET", "", { ["Content-Type"] = "application/json" })
 end
 
--- Register the resource start event handler
 AddEventHandler('onResourceStart', function(resourceName)
     if GetCurrentResourceName() == resourceName then
         GetLatestReleaseVersion()
