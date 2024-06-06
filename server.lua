@@ -101,6 +101,41 @@ end)
 
 
 
+
+RegisterServerEvent('vibes-ems:notify')
+AddEventHandler('vibes-ems:notify', function(msg, state)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    
+    if Player then
+        local phoneNumber = exports["lb-phone"]:GetEquippedPhoneNumber(src)
+        
+        if Config.UsingPhone and Config.Phone and phoneNumber then
+            if Config.Phone == "lb-phone" then
+				local senderNumber = Config.SMSSender
+                exports['lb-phone']:SendMessage(senderNumber, phoneNumber, msg, nil, nil, nil)
+            elseif Config.Phone == "qb-smartphone" then
+                -- Implement qb-phone notification logic here
+            elseif Config.Phone == "qs-smartphone" then
+                -- Implement qb-smartphone notification logic here
+            end
+        else
+            if Config.NotifyType == "qb" then
+                TriggerClientEvent('QBCore:Notify', src, msg, state)
+            elseif Config.NotifyType == "okok" then
+                TriggerClientEvent('okokNotify:Alert', src, "Doctor", msg, 5000, state, true)
+            elseif Config.NotifyType == "mythic" then
+                TriggerClientEvent('mythic_notify:client:SendAlert', src, { type = state, text = msg })
+            elseif Config.NotifyType == "custom" and Config.CustomNotifyFunction then
+				Config.CustomNotifyFunction(src, msg, state)
+            else
+                -- Fallback to default notification or print to console
+                print("[Doctor NPC] " .. msg)
+            end
+        end
+    end
+end)
+
 RegisterServerEvent('vibes-ems:charge')
 AddEventHandler('vibes-ems:charge', function()
 	local src = source
