@@ -32,7 +32,6 @@ if Config.UseHelpCommand then
     end)
 end
 
--- Client event to trigger the ambulance call from other scripts
 RegisterNetEvent('vibes-ems:client:helpPlayer', function()
     if (QBCore.Functions.GetPlayerData().metadata["isdead"]) or (QBCore.Functions.GetPlayerData().metadata["inlaststand"]) and spam then
         QBCore.Functions.TriggerCallback('vibes-ems:docOnline', function(EMSOnline, hasEnoughMoney)
@@ -55,7 +54,6 @@ RegisterNetEvent('vibes-ems:client:helpPlayer', function()
     end
 end)
 
--- Export function to trigger the ambulance call from other scripts
 function TriggerAmbulanceCall()
     TriggerEvent('vibes-ems:client:helpPlayer')
 end
@@ -113,21 +111,16 @@ Citizen.CreateThread(function()
             local dist1 = Vdist(loc.x, loc.y, loc.z, ld.x, ld.y, ld.z)
             if dist <= 10 then
                 if Active then
-                    -- Configure the NPC's pathfinding behavior
                     SetPedPathAvoidFire(test1, true)
                     SetPedPathCanUseLadders(test1, true)
                     SetPedPathCanDropFromHeight(test1, false)
                     SetPedPathPreferToAvoidWater(test1, true)
                     
-                    -- Set the NPC to avoid vehicles
                     SetPedPathAvoidFire(test1, false)
-                    -- SetPedAvoidVehicles(test1, true)
 
-                    -- Set the NPC's movement speed and priority
                     SetPedMoveRateOverride(test1, 1.0)
                     SetPedPathPreferToAvoidWater(test1, 1.0)
 
-                    -- Set the NPC to navigate to the player's coordinates
                     TaskGoToCoordAnyMeans(test1, loc.x, loc.y, loc.z, 1.0, 0, 0, 786603, 0xbf800000)
                 end
                 if dist1 <= 1 then
