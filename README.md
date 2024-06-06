@@ -1,5 +1,5 @@
 # VIBES EMS
-AI Doctor
+AI Doctor for QB-CORE
 
 # Description :
 
