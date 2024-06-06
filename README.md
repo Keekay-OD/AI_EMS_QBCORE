@@ -25,6 +25,7 @@ This script is designed for servers where EMS or doctors are not available. Play
 ### Added
 - Vehicle Emergency Lights and Seirens options added to config.  
 - NCP retries on failed revive attempt. Sometimes they get knocked out of the way by other elements in the city such as cars other npcs or adccidents.  
+- Added Option to choose spawned emergency vehicle in the config
 
 
 ## [1.1.0] - 2023-06-06
