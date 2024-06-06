@@ -75,7 +75,7 @@ AddEventHandler('onResourceStart', function(resourceName)
     end
 end)
 
-QBCore.Functions.CreateCallback('hhfw:docOnline', function(source, cb)
+QBCore.Functions.CreateCallback('vibes-ems:docOnline', function(source, cb)
 	local src = source
 	local Ply = QBCore.Functions.GetPlayer(src)
 	local xPlayers = QBCore.Functions.GetPlayers()
@@ -101,8 +101,8 @@ end)
 
 
 
-RegisterServerEvent('hhfw:charge')
-AddEventHandler('hhfw:charge', function()
+RegisterServerEvent('vibes-ems:charge')
+AddEventHandler('vibes-ems:charge', function()
 	local src = source
 	local xPlayer = QBCore.Functions.GetPlayer(src)
 	if xPlayer.PlayerData.money["cash"] >= Config.Price then

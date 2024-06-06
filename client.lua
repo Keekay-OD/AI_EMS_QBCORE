@@ -11,10 +11,10 @@ local spam = true
 if Config.UseHelpCommand then
     RegisterCommand("help", function(source, args, raw)
         if (QBCore.Functions.GetPlayerData().metadata["isdead"]) or (QBCore.Functions.GetPlayerData().metadata["inlaststand"]) and spam then
-            QBCore.Functions.TriggerCallback('hhfw:docOnline', function(EMSOnline, hasEnoughMoney)
+            QBCore.Functions.TriggerCallback('vibes-ems:docOnline', function(EMSOnline, hasEnoughMoney)
                 if EMSOnline <= Config.Doctor and hasEnoughMoney and spam then
                     SpawnVehicle(GetEntityCoords(PlayerPedId()))
-                    TriggerServerEvent('hhfw:charge')
+                    TriggerServerEvent('vibes-ems:charge')
                     Notify("Medic is arriving")
                 else
                     if EMSOnline > Config.Doctor then
@@ -35,10 +35,10 @@ end
 -- Client event to trigger the ambulance call from other scripts
 RegisterNetEvent('vibes-ems:client:helpPlayer', function()
     if (QBCore.Functions.GetPlayerData().metadata["isdead"]) or (QBCore.Functions.GetPlayerData().metadata["inlaststand"]) and spam then
-        QBCore.Functions.TriggerCallback('hhfw:docOnline', function(EMSOnline, hasEnoughMoney)
+        QBCore.Functions.TriggerCallback('vibes-ems:docOnline', function(EMSOnline, hasEnoughMoney)
             if EMSOnline <= Config.Doctor and hasEnoughMoney and spam then
                 SpawnVehicle(GetEntityCoords(PlayerPedId()))
-                TriggerServerEvent('hhfw:charge')
+                TriggerServerEvent('vibes-ems:charge')
                 Notify("Medic is arriving")
             else
                 if EMSOnline > Config.Doctor then
@@ -82,7 +82,7 @@ function SpawnVehicle(x, y, z)
         mechVeh = CreateVehicle(vehhash, spawnPos, spawnHeading, true, false)                        
         ClearAreaOfVehicles(GetEntityCoords(mechVeh), 5000, false, false, false, false, false);  
         SetVehicleOnGroundProperly(mechVeh)
-		SetVehicleNumberPlateText(mechVeh, "HHFW")
+		SetVehicleNumberPlateText(mechVeh, "VC EMS")
 		SetEntityAsMissionEntity(mechVeh, true, true)
 		SetVehicleEngineOn(mechVeh, true, true, false)
         
