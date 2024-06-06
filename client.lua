@@ -15,7 +15,7 @@ if Config.UseHelpCommand then
                 if EMSOnline <= Config.Doctor and hasEnoughMoney and spam then
                     SpawnVehicle(GetEntityCoords(PlayerPedId()))
                     TriggerServerEvent('vibes-ems:charge')
-                    TriggerServerEvent('vibes-ems:notify', "Medic is arriving", "success")
+                    TriggerServerEvent('vibes-ems:notify', "The Medic is on his way from the nearest hospital. ", "success")
                 else
                     if EMSOnline > Config.Doctor then
                         TriggerServerEvent('vibes-ems:notify', "There are too many medics online", "error")
@@ -38,7 +38,7 @@ RegisterNetEvent('vibes-ems:client:helpPlayer', function()
             if EMSOnline <= Config.Doctor and hasEnoughMoney and spam then
                 SpawnVehicle(GetEntityCoords(PlayerPedId()))
                 TriggerServerEvent('vibes-ems:charge')
-                TriggerServerEvent('vibes-ems:notify', "Medic is arriving", "success", true)
+                TriggerServerEvent('vibes-ems:notify', "The Medic is on their way from the nearest hospital. ", "success", true)
             else
                 if EMSOnline > Config.Doctor then
                     TriggerServerEvent('vibes-ems:notify', "There are too many medics online", "error", true)
