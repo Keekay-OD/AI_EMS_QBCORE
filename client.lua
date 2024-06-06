@@ -133,6 +133,7 @@ function SpawnVehicle()
         PlaySoundFrontend(-1, "Text_Arrive_Tone", "Phone_SoundSet_Default", 1)
         Wait(2000)
         TaskVehicleDriveToCoord(mechPed, mechVeh, playerCoords.x, playerCoords.y, playerCoords.z, 20.0, 0, GetEntityModel(mechVeh), 524863, 2.0)
+        originalSpawnLocation = closestSpawn -- Store the original spawn location
         test = mechVeh
         test1 = mechPed
         Active = true
@@ -188,18 +189,38 @@ function DoctorNPC()
         disableCombat = true,
     }, {}, {}, {}, function() -- Done
         ClearPedTasks(test1)
-        Citizen.Wait(500)
         ClearPedTasks = true
+        Citizen.Wait(500)
         if ClearPedTasks == true then
             TriggerEvent("hospital:client:Revive")
         end
         StopScreenEffect('DeathFailOut')
         
         TriggerServerEvent('vibes-ems:notify', "Your treatment is done, you were charged: $" .. Config.Price, "success", false)
-        RemovePedElegantly(test1)
-        DeleteEntity(test)
-        Wait(5000)
-        DeleteEntity(test1)
+        DriveAwayFromPlayer()
         spam = true
     end)
+end
+
+function DriveAwayFromPlayer()
+    local playerCoords = GetEntityCoords(PlayerPedId())
+    local drivingStyle = 786603 -- Change this value to adjust the driving style
+    
+    -- Set the destination to the original spawn location
+    TaskVehicleDriveToCoord(mechPed, mechVeh, originalSpawnLocation.x, originalSpawnLocation.y, originalSpawnLocation.z, 20.0, 0, GetEntityModel(mechVeh), drivingStyle, 1.0, true)
+    
+    -- Wait until the vehicle reaches the destination or a certain distance from it
+    local distance = GetDistanceBetweenCoords(GetEntityCoords(mechVeh), originalSpawnLocation.x, originalSpawnLocation.y, originalSpawnLocation.z, true)
+    local threshold = 5.0 -- Adjust this value to set the distance threshold for reaching the destination
+    
+    while distance > threshold do
+        Citizen.Wait(1000)
+        distance = GetDistanceBetweenCoords(GetEntityCoords(mechVeh), originalSpawnLocation.x, originalSpawnLocation.y, originalSpawnLocation.z, true)
+    end
+    
+    -- Remove the ped and vehicle once the destination is reached
+    RemovePedElegantly(test1)
+    DeleteEntity(test)
+    Wait(5000)
+    DeleteEntity(test1)
 end
