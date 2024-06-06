@@ -61,47 +61,84 @@ end
 exports('TriggerAmbulanceCall', TriggerAmbulanceCall)
 
 
-function SpawnVehicle(x, y, z)  
+local function getDistanceBetweenCoords(coords1, coords2)
+    local dx = coords1.x - coords2.x
+    local dy = coords1.y - coords2.y
+    local dz = coords1.z - coords2.z
+    return math.sqrt(dx * dx + dy * dy + dz * dz)
+end
+
+-- Function to parse a string into a table with x, y, z, heading
+local function parseVector4String(vector4String)
+    local x, y, z, heading = string.match(vector4String, "([^,]+), ([^,]+), ([^,]+), ([^,]+)")
+    return { x = tonumber(x), y = tonumber(y), z = tonumber(z), heading = tonumber(heading) }
+end
+
+-- Function to find the closest spawn location
+local function getClosestSpawnLocation(playerCoords, spawnLocations)
+    local closestDistance = nil
+    local closestLocation = nil
+
+    for _, locationString in ipairs(spawnLocations) do
+        local location = parseVector4String(locationString)
+        local distance = getDistanceBetweenCoords(playerCoords, location)
+        if closestDistance == nil or distance < closestDistance then
+            closestDistance = distance
+            closestLocation = location
+        end
+    end
+
+    return closestLocation
+end
+
+-- Function to spawn the vehicle
+function SpawnVehicle()
     spam = false
     local vehhash = GetHashKey(Config.Vehicle)
-    local loc = GetEntityCoords(PlayerPedId())
+    local playerCoords = GetEntityCoords(PlayerPedId())
+
+    -- Request the vehicle model
     RequestModel(vehhash)
     while not HasModelLoaded(vehhash) do
         Wait(1)
     end
+
+    -- Request the doctor ped model
     RequestModel('s_m_m_doctor_01')
     while not HasModelLoaded('s_m_m_doctor_01') do
         Wait(1)
     end
-    local spawnRadius = 90                                                    
-    local found, spawnPos, spawnHeading = GetClosestVehicleNodeWithHeading(loc.x + math.random(-spawnRadius, spawnRadius), loc.y + math.random(-spawnRadius, spawnRadius), loc.z, 0, 3, 0)
 
-    if not DoesEntityExist(vehhash) then
-        mechVeh = CreateVehicle(vehhash, spawnPos, spawnHeading, true, false)                        
-        ClearAreaOfVehicles(GetEntityCoords(mechVeh), 5000, false, false, false, false, false)  
+    -- Find the closest spawn location
+    local closestSpawn = getClosestSpawnLocation(playerCoords, Config.VehicleSpawns)
+
+    if closestSpawn and not DoesEntityExist(vehhash) then
+        mechVeh = CreateVehicle(vehhash, closestSpawn.x, closestSpawn.y, closestSpawn.z, closestSpawn.heading, true, false)
+        ClearAreaOfVehicles(GetEntityCoords(mechVeh), 5000, false, false, false, false, false)
         SetVehicleOnGroundProperly(mechVeh)
         SetVehicleNumberPlateText(mechVeh, "VC EMS")
         SetEntityAsMissionEntity(mechVeh, true, true)
         SetVehicleEngineOn(mechVeh, true, true, false)
-        
+
         -- Enable sirens and lights
         SetVehicleSiren(mechVeh, true)
         SetVehicleHasMutedSirens(mechVeh, Config.MutedSirens)
-        
-        mechPed = CreatePedInsideVehicle(mechVeh, 26, GetHashKey('s_m_m_doctor_01'), -1, true, false)              	
-        
-        mechBlip = AddBlipForEntity(mechVeh)                                                        	
-        SetBlipFlashes(mechBlip, true)  
+
+        mechPed = CreatePedInsideVehicle(mechVeh, 26, GetHashKey('s_m_m_doctor_01'), -1, true, false)
+
+        mechBlip = AddBlipForEntity(mechVeh)
+        SetBlipFlashes(mechBlip, true)
         SetBlipColour(mechBlip, 5)
 
         PlaySoundFrontend(-1, "Text_Arrive_Tone", "Phone_SoundSet_Default", 1)
         Wait(2000)
-        TaskVehicleDriveToCoord(mechPed, mechVeh, loc.x, loc.y, loc.z, 20.0, 0, GetEntityModel(mechVeh), 524863, 2.0)
+        TaskVehicleDriveToCoord(mechPed, mechVeh, playerCoords.x, playerCoords.y, playerCoords.z, 20.0, 0, GetEntityModel(mechVeh), 524863, 2.0)
         test = mechVeh
         test1 = mechPed
         Active = true
     end
 end
+
 
 Citizen.CreateThread(function()
     while true do
@@ -151,8 +188,11 @@ function DoctorNPC()
         disableCombat = true,
     }, {}, {}, {}, function() -- Done
         ClearPedTasks(test1)
+        ClearPedTasks = true
         Citizen.Wait(500)
-        TriggerEvent("hospital:client:Revive")
+        if ClearPedTasks == true then
+            TriggerEvent("hospital:client:Revive")
+        end
         StopScreenEffect('DeathFailOut')
         
         TriggerServerEvent('vibes-ems:notify', "Your treatment is done, you were charged: $" .. Config.Price, "success", false)
