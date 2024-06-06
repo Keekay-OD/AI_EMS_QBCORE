@@ -7,6 +7,7 @@ This script is basically for to be used in the server when there are no ems /doc
 
 
 
+
 # Features:
 
 - **Enhanced Roleplay Experience:** This script is perfect for large servers, offering players more immersive roleplay opportunities by reducing the need for constant respawning or just sitting around.
@@ -18,3 +19,8 @@ This script is basically for to be used in the server when there are no ems /doc
 - **Shoutouts:** Big thanks to @hh_aidoc for the fork. https://github.com/hhfw1/hh_aidoc
 ---
 
+# Install 
+
+				exports['vibes-ems']:TriggerAmbulanceCall()
+
+This export can be used in other scripts such as qb-hospital.  I included the trigger in my script when the player is dead.  It will check for in citer players on the job then send ems  
