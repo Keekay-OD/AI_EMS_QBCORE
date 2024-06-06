@@ -141,26 +141,37 @@ function DoctorNPC()
 	end
 
 	TaskPlayAnim(test1, "mini@cpr@char_a@cpr_str","cpr_pumpchest",1.0, 1.0, -1, 9, 1.0, 0, 0, 0)
-	QBCore.Functions.Progressbar("revive_doc", "The doctor is giving you medical aid", Config.ReviveTime, false, false, {
-		disableMovement = false,
-		disableCarMovement = false,
-		disableMouse = false,
-		disableCombat = true,
-	}, {}, {}, {}, function() -- Done
-		ClearPedTasks(test1)
-		Citizen.Wait(500)
-        	TriggerEvent("hospital:client:Revive")
-		StopScreenEffect('DeathFailOut')	
-		Notify("Your treatment is done, you were charged: "..Config.Price, "success")
-		RemovePedElegantly(test1)
-		DeleteEntity(test)
-		Wait(5000)
-		DeleteEntity(test1)
-		spam = true
-	end)
+    QBCore.Functions.Progressbar("revive_doc", "The doctor is giving you medical aid", Config.ReviveTime, false, false, {
+        disableMovement = false,
+        disableCarMovement = false,
+        disableMouse = false,
+        disableCombat = true,
+    }, {}, {}, {}, function() -- Done
+        ClearPedTasks(test1)
+        Citizen.Wait(500)
+        TriggerEvent("hospital:client:Revive")
+        StopScreenEffect('DeathFailOut')
+        Notify("Your treatment is done, you were charged: " .. Config.Price, "success")
+        RemovePedElegantly(test1)
+        DeleteEntity(test)
+        Wait(5000)
+        DeleteEntity(test1)
+        spam = true
+    end)
 end
 
 
 function Notify(msg, state)
-    QBCore.Functions.Notify(msg, state)
+    if Config.NotifyType == "qb" then
+        QBCore.Functions.Notify(msg, state)
+    elseif Config.NotifyType == "okok" then
+        exports['okokNotify']:Alert("Doctor", msg, 5000, state, true)
+    elseif Config.NotifyType == "mythic" then
+        exports['mythic_notify']:DoHudText(state, msg)
+    elseif Config.NotifyType == "custom" and Config.CustomNotifyFunction then
+        Config.CustomNotifyFunction(msg, state)
+    else
+        -- Fallback to default notification or print to console
+        print("[Doctor NPC] " .. msg)
+    end
 end
