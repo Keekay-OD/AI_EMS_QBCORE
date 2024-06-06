@@ -188,8 +188,8 @@ function DoctorNPC()
         disableCombat = true,
     }, {}, {}, {}, function() -- Done
         ClearPedTasks(test1)
-        ClearPedTasks = true
         Citizen.Wait(500)
+        ClearPedTasks = true
         if ClearPedTasks == true then
             TriggerEvent("hospital:client:Revive")
         end
