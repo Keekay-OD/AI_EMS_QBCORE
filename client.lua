@@ -104,22 +104,37 @@ end
 
 Citizen.CreateThread(function()
     while true do
-      Citizen.Wait(200)
+        Citizen.Wait(200)
         if Active then
             local loc = GetEntityCoords(GetPlayerPed(-1))
-			local lc = GetEntityCoords(test)
-			local ld = GetEntityCoords(test1)
+            local lc = GetEntityCoords(test)
+            local ld = GetEntityCoords(test1)
             local dist = Vdist(loc.x, loc.y, loc.z, lc.x, lc.y, lc.z)
-			local dist1 = Vdist(loc.x, loc.y, loc.z, ld.x, ld.y, ld.z)
+            local dist1 = Vdist(loc.x, loc.y, loc.z, ld.x, ld.y, ld.z)
             if dist <= 10 then
-				if Active then
-					TaskGoToCoordAnyMeans(test1, loc.x, loc.y, loc.z, 1.0, 0, 0, 786603, 0xbf800000)
-				end
-				if dist1 <= 1 then 
-					Active = false
-					ClearPedTasksImmediately(test1)
-					DoctorNPC()
-				end
+                if Active then
+                    -- Configure the NPC's pathfinding behavior
+                    SetPedPathAvoidFire(test1, true)
+                    SetPedPathCanUseLadders(test1, true)
+                    SetPedPathCanDropFromHeight(test1, false)
+                    SetPedPathPreferToAvoidWater(test1, true)
+                    
+                    -- Set the NPC to avoid vehicles
+                    SetPedPathAvoidFire(test1, false)
+                    -- SetPedAvoidVehicles(test1, true)
+
+                    -- Set the NPC's movement speed and priority
+                    SetPedMoveRateOverride(test1, 1.0)
+                    SetPedPathPreferToAvoidWater(test1, 1.0)
+
+                    -- Set the NPC to navigate to the player's coordinates
+                    TaskGoToCoordAnyMeans(test1, loc.x, loc.y, loc.z, 1.0, 0, 0, 786603, 0xbf800000)
+                end
+                if dist1 <= 1 then
+                    Active = false
+                    ClearPedTasksImmediately(test1)
+                    DoctorNPC()
+                end
             end
         end
     end
