@@ -37,7 +37,6 @@ RegisterNetEvent('vibes-ems:client:helpPlayer', function()
         QBCore.Functions.TriggerCallback('vibes-ems:docOnline', function(EMSOnline, hasEnoughMoney)
             if EMSOnline <= Config.Doctor and hasEnoughMoney and spam then
                 SpawnVehicle(GetEntityCoords(PlayerPedId()))
-                TriggerServerEvent('vibes-ems:charge')
                 TriggerServerEvent('vibes-ems:notify', "The Medic is on their way from the nearest hospital. ", "success", true)
             else
                 if EMSOnline > Config.Doctor then
@@ -157,7 +156,7 @@ Citizen.CreateThread(function()
 
                     TaskFollowNavMeshToCoord(test1, loc.x, loc.y, loc.z, 1.0, -1, 1.0, false, 0.0)
                 end
-                if dist1 <= 10 then
+                if dist1 <= 1 then
                     Active = false
                     ClearPedTasksImmediately(test1)
                     DoctorNPC()
@@ -188,7 +187,7 @@ function DoctorNPC()
             TriggerEvent("hospital:client:Revive")
         end
         StopScreenEffect('DeathFailOut')
-        
+        TriggerServerEvent('vibes-ems:charge')
         TriggerServerEvent('vibes-ems:notify', "Your treatment is done, you were charged: $" .. Config.Price, "success", false)
         DriveAwayFromPlayer()
         spam = true
