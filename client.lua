@@ -142,7 +142,7 @@ Citizen.CreateThread(function()
             local ld = GetEntityCoords(test1)
             local dist = Vdist(loc.x, loc.y, loc.z, lc.x, lc.y, lc.z)
             local dist1 = Vdist(loc.x, loc.y, loc.z, ld.x, ld.y, ld.z)
-            if dist <= 10 then
+            if dist <= 50 then
                 if Active then
                     SetPedPathAvoidFire(test1, true)
                     SetPedPathCanUseLadders(test1, true)
