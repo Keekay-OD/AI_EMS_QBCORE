@@ -155,9 +155,9 @@ Citizen.CreateThread(function()
                     SetPedMoveRateOverride(test1, 1.0)
                     SetPedPathPreferToAvoidWater(test1, 1.0)
 
-                    TaskGoToCoordAnyMeans(test1, loc.x, loc.y, loc.z, 1.0, 0, 0, 786603, 0xbf800000)
+                    TaskFollowNavMeshToCoord(test1, loc.x, loc.y, loc.z, 1.0, -1, 1.0, false, 0.0)
                 end
-                if dist1 <= 1 then
+                if dist1 <= 10 then
                     Active = false
                     ClearPedTasksImmediately(test1)
                     DoctorNPC()
